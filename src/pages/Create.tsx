@@ -10,8 +10,14 @@ function Create () {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
-        if (!title || !description || !amount) {
+        setInfo("")
+        setError("")
+        if (!title || !description || !amount ) {
             setError("Please fill out all fields")
+            return
+        }
+        if (amount < 0) {
+            setError("Amount cannot be negative")
             return
         }
         const { data, error } = await supabase
@@ -21,10 +27,14 @@ function Create () {
             console.log(error)
             setError("Please fill out all fields")
         }
-        if (data) {
-            setError(null)
-            setInfo("Gacha created successfully")
+        else{
+            if (data) {
+                setError(null)
+            }
+            setInfo("Gacha created")
         }
+        
+
     }
     
 
