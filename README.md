@@ -1,3 +1,21 @@
+# db_the_card_is_green Project
+
+## Memeber
+* Aom
+* Kampun
+* Reinn
+* TA
+
+# Progression
+## Week 1 19-22 Mar 2024
+* Setting up project (Vite + Supabase)
+* Brief Project proposal & (EA-diagram)
+
+
+
+
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
