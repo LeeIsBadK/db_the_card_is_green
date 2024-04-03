@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link} from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Homepage from "./pages/Homepage";
 import Create from "./pages/Create";
@@ -7,12 +7,25 @@ import Update from "./pages/Update";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 
+const isAuth4home = () => {
+  const token = sessionStorage.getItem('token')
+  if (token) {
+    return true
+  }
+  return false
+}
+
 function App() {
   const [token, setToken] = useState(false)
 
   if (token) {
     sessionStorage.setItem('token', JSON.stringify(token))
   }
+  useEffect(() => {
+    if (token) {
+      isAuth4home()
+    }
+  }, [token]) // Add a closing parenthesis here
   return (
     <BrowserRouter>
       <nav className="Box w-full h-20 bg-emerald-600">
