@@ -31,7 +31,7 @@ function Create () {
             console.log(error)
             setError("Please fill out all fields")
         }
-        if (data) {
+        else{
             setError(null)
             navigate('/home')
             alert("Gacha updated successfully")
