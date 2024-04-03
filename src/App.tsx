@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link, json} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link} from "react-router-dom";
 import { useState } from "react";
 
 import Home from "./pages/home";
