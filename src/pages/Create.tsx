@@ -1,5 +1,6 @@
 import { useState } from "react"
 import supabase from "../server/App"
+import { useNavigate } from "react-router-dom"
 
 function Create () {
     const [title, setTitle] = useState('')
@@ -7,6 +8,8 @@ function Create () {
     const [amount, setAmount] = useState(0)
     const [formError, setError] = useState<string|null>(null)
     const [info, setInfo] = useState("")
+
+    const navigate = useNavigate()
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
@@ -21,20 +24,19 @@ function Create () {
             return
         }
         const { data, error } = await supabase
-            .from('Gacha').insert([{title, description, amount}])
+            .from('Gacha')
+            .insert([{title, description, amount}])
         
         if (error) {
             console.log(error)
             setError("Please fill out all fields")
         }
-        else{
-            if (data) {
-                setError(null)
-            }
-            setInfo("Gacha created")
+        if (data) {
+            setError(null)
+            navigate('/home')
+            alert("Gacha updated successfully")
         }
         
-
     }
     
 
