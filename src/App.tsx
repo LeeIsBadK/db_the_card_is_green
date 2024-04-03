@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Link} from "react-router-dom";
 import { useState } from "react";
 
-import Home from "./pages/Home";
+import Homepage from "./pages/Homepage";
 import Create from "./pages/Create";
 import Update from "./pages/Update";
 import SignUp from "./pages/SignUp";
@@ -30,12 +30,12 @@ function App() {
         </ul>
       </nav>
       <Routes>
-        {token?<Route path="/home" element={<Home />} />:<Route path="/login" element={<Login setToken={setToken}/>} />}
+        {token?<Route path="/home" element={<Homepage />} />:<Route path="/login" element={<Login setToken={setToken}/>} />}
         <Route path="/create" element={<Create />} />
         <Route path="/:id" element={<Update />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login setToken={setToken}/>} />
-        {token?<Route path="/" element={<Home />} />:<Route path="/" element={<Login setToken={setToken}/>} />}
+        {token?<Route path="/" element={<Homepage />} />:<Route path="/" element={<Login setToken={setToken}/>} />}
       </Routes>
     </BrowserRouter>
   );

@@ -2,7 +2,7 @@ import supabase from "../server/App";
 import React, { useEffect } from "react";
 import gachaCard from "../assets/components/gachaCard";
 
-function Home() {
+function Homepage() {
   const [gacha, setGacha] = React.useState<any| null>(null)
   const [fetchError, setFetchError] = React.useState<String | null>(null)
   const [orderBy, setOrderBy] = React.useState("created_at")
@@ -49,4 +49,4 @@ function Home() {
     </>
   );
 }
-      export default Home;
+export default Homepage;
