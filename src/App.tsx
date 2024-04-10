@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Link} from "react-router-dom";
 import { useEffect, useState } from "react";
+import supabase from "./server/App";
 
 import Homepage from "./pages/Homepage";
 import Create from "./pages/Create";
@@ -13,6 +14,12 @@ const isAuth4home = () => {
     return true
   }
   return false
+}
+
+function handleLogout() {
+  supabase.auth.signOut();
+  sessionStorage.removeItem("token");
+  window.location.reload();
 }
 
 function App() {
@@ -40,6 +47,11 @@ function App() {
               Create
             </Link>
           </li>
+          {isAuth4home() && <li className="mx-4 text-white">
+            <Link to="/" onClick={handleLogout}>
+              Logout
+            </Link>
+          </li>}
         </ul>
       </nav>
       <Routes>

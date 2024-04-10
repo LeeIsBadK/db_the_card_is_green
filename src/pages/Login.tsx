@@ -21,7 +21,7 @@ const Login = ({setToken}: {setToken: any}) => {
         });
         if (error) {
             console.log(error);
-            alert('Error signing up');
+            alert('Error signing up or invalid credentials');
         } else {
             console.log(data);
             alert('Sign up successful');

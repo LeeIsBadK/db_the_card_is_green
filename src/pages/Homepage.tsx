@@ -2,6 +2,7 @@ import supabase from "../server/App";
 import React, { useEffect } from "react";
 import gachaCard from "../assets/components/gachaCard";
 
+
 function Homepage() {
   const [gacha, setGacha] = React.useState<any| null>(null)
   const [fetchError, setFetchError] = React.useState<String | null>(null)
