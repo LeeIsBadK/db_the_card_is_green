@@ -14,7 +14,7 @@ function Update() {
     useEffect(() => {
         const fetchGacha = async () => {
             const { data, error } = await supabase
-            .from('Gacha')
+            .from('decks')
             .select()
             .eq('id', id)
             .single()
