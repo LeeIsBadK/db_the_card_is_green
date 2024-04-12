@@ -1,47 +1,51 @@
 import supabase from "../server/App";
 import React, { useEffect } from "react";
-import gachaCard from "../assets/components/gachaCard";
+import deckCard from "../assets/components/decksCard";
 
 function Homepage() {
-  const [gacha, setGacha] = React.useState<any| null>(null)
+  const [deck, setDeck] = React.useState<any| null>(null)
   const [fetchError, setFetchError] = React.useState<String | null>(null)
   const [orderBy, setOrderBy] = React.useState("created_at")
+  const [ascending, setAscending] = React.useState(false)
+  const token = JSON.parse(sessionStorage.getItem('token') || '{}')
+
 
   useEffect(() => {
-    async function fetchGacha() {
+    async function fecthDeck() {
       const { data, error } = await supabase
-      .from('Gacha')
-      .select('*')
-      .order(orderBy, {ascending: false})
+        .from('decks')
+        .select('*')
+        .filter('user_id', 'eq', token.user.id)
+        .order(orderBy, { ascending: ascending });
 
       if (error) {
-        setFetchError("Could not fetch Gacha")
-        return
+        setFetchError("Could not fetch Deck");
+        return;
       }
       if (data) {
-        setGacha(data)
-        setFetchError(null)
+        setDeck(data);
+        setFetchError(null);
       }
     }
-    fetchGacha()
+    fecthDeck()
 
-  }, [orderBy])
+  }, [orderBy, ascending])
 
   return (
     <>
       {fetchError && <p>{fetchError}</p>}
-      {gacha && (
+      {deck && (
         <>
           <div className="flex flex-rows px-2 gap-2">
             <p>Order by:</p>
+            <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={() => setAscending(!ascending)}>Last Updated</button>
             <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={() => setOrderBy("created_at")}>Time Created</button>
-            <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={() => setOrderBy("title")}>Title</button>
-            <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={() => setOrderBy("amount")}>Amount</button>
+            <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={() => setOrderBy("name")}>Name</button>
             <p>{orderBy}</p>
           </div>
           <div className="mx-6 grid grid-cols-4">
-            {gacha.map((item: any) => {
-              return gachaCard(item);
+            {deck.map((item: any) => {
+              return deckCard(item);
             })}
           </div>
         </>

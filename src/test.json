@@ -1,0 +1,47 @@
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsImtpZCI6ImtPVmpBZW5mSTFJVFFjQUUiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzEyNzI5MDYzLCJpYXQiOjE3MTI3MjU0NjMsImlzcyI6Imh0dHBzOi8vaWxkZ2pubWZoam16ZWltemFxZnguc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6IjlkNjdhYmVkLTMxMDYtNDc4Zi04Nzk5LWFlNGMxZTc3YWE5MiIsImVtYWlsIjoidGVzdEBkYmNhcmQuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6InRlc3RAZGJjYXJkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiI5ZDY3YWJlZC0zMTA2LTQ3OGYtODc5OS1hZTRjMWU3N2FhOTIiLCJ1c2VybmFtZSI6InRlc3QifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTcxMjcyNTQ2M31dLCJzZXNzaW9uX2lkIjoiNzA3NThkNjUtYzc0ZS00YjAyLWI2ZjAtOWIxNGQwMDQ3MzExIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0._BgfODvFKvOHnaYoY-A9Q182ZWz1uuG9T15OUEVc_RM",
+  "token_type": "bearer",
+  "expires_in": 3600,
+  "expires_at": 1712729063,
+  "refresh_token": "178AreyCodfP-iXhJaIc1A",
+  "user": {
+    "id": "9d67abed-3106-478f-8799-ae4c1e77aa92",
+    "aud": "authenticated",
+    "role": "authenticated",
+    "email": "test@dbcard.com",
+    "email_confirmed_at": "2024-04-03T07:32:19.506751Z",
+    "phone": "",
+    "confirmed_at": "2024-04-03T07:32:19.506751Z",
+    "last_sign_in_at": "2024-04-10T05:04:23.512717494Z",
+    "app_metadata": { "provider": "email", "providers": ["email"] },
+    "user_metadata": {
+      "email": "test@dbcard.com",
+      "email_verified": false,
+      "phone_verified": false,
+      "sub": "9d67abed-3106-478f-8799-ae4c1e77aa92",
+      "username": "test"
+    },
+    "identities": [
+      {
+        "identity_id": "4e08981f-a22f-4fc8-b1ec-bed3509ac555",
+        "id": "9d67abed-3106-478f-8799-ae4c1e77aa92",
+        "user_id": "9d67abed-3106-478f-8799-ae4c1e77aa92",
+        "identity_data": {
+          "email": "test@dbcard.com",
+          "email_verified": false,
+          "phone_verified": false,
+          "sub": "9d67abed-3106-478f-8799-ae4c1e77aa92",
+          "username": "test"
+        },
+        "provider": "email",
+        "last_sign_in_at": "2024-04-03T07:32:19.502031Z",
+        "created_at": "2024-04-03T07:32:19.50208Z",
+        "updated_at": "2024-04-03T07:32:19.50208Z",
+        "email": "test@dbcard.com"
+      }
+    ],
+    "created_at": "2024-04-03T07:32:19.498155Z",
+    "updated_at": "2024-04-10T05:04:23.514228Z",
+    "is_anonymous": false
+  }
+}

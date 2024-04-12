@@ -66,7 +66,7 @@ function Update() {
 
     const handleDelete = async () => {
         const { error } = await supabase
-        .from('Gacha')
+        .from('decks')
         .delete()
         .eq('id', id)
 
@@ -93,10 +93,6 @@ function Update() {
                 <label>
                     Description:
                     <input type="text" className="border" defaultValue={description} onChange={(e) => setDescription(e.target.value)}/>
-                </label>
-                <label>
-                    Amount:
-                    <input type="number" className="border" defaultValue={amount} onChange={(e) => setAmount(parseInt(e.target.value))}/>
                 </label>
                     <button  className="border border-black"type="submit">Update</button>
             </form>
