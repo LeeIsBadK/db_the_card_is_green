@@ -8,7 +8,6 @@ function Update() {
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
-    const [amount, setAmount] = useState(0)
     const [formError, setError] = useState<string|null>(null)
 
     useEffect(() => {
