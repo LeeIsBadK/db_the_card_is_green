@@ -20,12 +20,12 @@ function Update() {
             .single()
 
             if (error) {
+                alert('Could not fetch Gacha')
                 navigate('/', {replace: true})
             }
             if (data) {
-                setTitle(data.title)
+                setTitle(data.name)
                 setDescription(data.description)
-                setAmount(data.amount)
             }
         }
 
@@ -38,28 +38,24 @@ function Update() {
         e.preventDefault()
         setError('')
 
-        if (!title || !description || !amount) {
+        if (!title || !description) {
             setError('Please fill out all fields')
-            return
-        }
-        if (amount < 0) {
-            setError('Amount cannot be negative')
             return
         }
 
         const { data, error } = await supabase
-        .from('Gacha')
-        .update({title, description, amount})
+        .from('decks')
+        .update({name:title, description:description})
         .eq('id', id)
 
         if (error) {
             console.log(error)
-            setError('Could not update Gacha')
+            setError('Could not update deck')
             return
         }
         else{
             console.log(data)
-            alert('Gacha updated successfully')
+            alert('Deck updated successfully')
             navigate('/', {replace: true})
         }
     }
@@ -72,11 +68,11 @@ function Update() {
 
         if (error) {
             console.log(error)
-            setError('Could not delete Gacha')
+            setError('Could not delete deck')
             return
         }
         else{
-            alert('Gacha deleted successfully')
+            alert('deck deleted successfully')
             navigate('/home', {replace: true})
         }
     }
