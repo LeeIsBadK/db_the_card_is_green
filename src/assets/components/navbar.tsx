@@ -1,14 +1,32 @@
+import { Link } from "react-router-dom";
+
+const handleLogout = () => {
+    sessionStorage.removeItem('token')
+}
+
 function Navbbar() {
-    return(
-        <div>
-            <nav>
-                <ul>
-                    <li>Home</li>
-                    <li>About</li>
-                    <li>Contact</li>
-                </ul>
-            </nav>
-        </div>
+    const token = sessionStorage.getItem('token')
+    return (
+        <nav className="Box w-full h-20 bg-emerald-600">
+        <ul className="flex justify-center items-center h-full">
+          <li className="mx-4 ">
+            {token && <Link to="/home" className="text-white">
+              Home
+            </Link>}
+          </li>
+          <li className="mx-4">
+            {token && <Link to="/create" className="text-white">
+              Create
+            </Link>
+            }
+          </li>
+          {token && <li className="mx-4"> 
+            <Link to="/login" className="text-white" onClick={handleLogout}>
+              Logout
+            </Link>
+          </li>}
+        </ul>
+      </nav>
     );
 }
 export default Navbbar;

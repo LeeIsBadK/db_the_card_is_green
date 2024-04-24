@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import supabase from "../server/App"
 import { useNavigate } from "react-router-dom"
 
@@ -39,6 +39,13 @@ function Create () {
         }
         
     }
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/login', { replace: true })
+            return
+        }
+    }, [token, navigate])
     
 
   return (
