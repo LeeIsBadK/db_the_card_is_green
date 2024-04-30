@@ -1,23 +1,15 @@
 import supabase from "../server/App";
 import React, { useEffect } from "react";
 import deckCard from "../assets/components/decksCard";
-import { useNavigate } from "react-router-dom";
 
-function Homepage() {
+function Homepage({ token }: any) {
   const [deck, setDeck] = React.useState<any| null>(null)
   const [fetchError, setFetchError] = React.useState<String | null>(null)
   const [orderBy, setOrderBy] = React.useState("created_at")
   const [ascending, setAscending] = React.useState(false)
-  const token = JSON.parse(localStorage.getItem('token') || '{}')
-  const navigate = useNavigate()
 
 
   useEffect(() => {
-
-    if (token.user.id === undefined) {
-      navigate('/login', { replace: true });
-      return;
-    }
     async function fecthDeck() {
       const { data, error } = await supabase
         .from('Decks')

@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 
-const handleLogout = () => {
-    localStorage.removeItem('token')
-}
 
-function Navbbar() {
-    const token = JSON.parse(localStorage.getItem('token')|| '')
+function Navbbar({token,setToken}:any) {
+  const handleLogout = () => {
+    setToken(null)
+    localStorage.removeItem('token')
+  }
     return (
         <nav className="Box w-full h-20 bg-emerald-600">
         <ul className="flex justify-center items-center h-full">

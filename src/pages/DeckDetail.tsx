@@ -15,7 +15,7 @@ function DeckEdit() {
     const [cards, setCards] = useState<any[]>([])
 
     useEffect(() => {
-        const token = JSON.parse(localStorage.getItem('token')|| "")
+        const token = JSON.parse(localStorage.getItem('token')|| "null")
         const jsonToken = token ? token : null
         console.log(jsonToken)
 
@@ -32,6 +32,7 @@ function DeckEdit() {
                 navigate('/', { replace: false })
             }
             if (data) {
+                console.log(data)
                 if (data.user_id !== jsonToken.user.id) {
                     navigate('/', { replace: true })
                     return
@@ -109,6 +110,7 @@ function DeckEdit() {
     const handleSearch = async (e: any) => {
         e.preventDefault()
         setSearchResult([])
+        setSearchResult([])
         setSearchError(null)
         console.log(searchName)
         const req = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=${searchName}`)
@@ -173,6 +175,11 @@ function DeckEdit() {
                         </div>
                     ))}
                     {SearchError && <p>{SearchError}</p>}
+                </div>
+                <div>
+                    <p>
+                        {JSON.stringify(cards)}
+                    </p>
                 </div>
             </div>
         </>

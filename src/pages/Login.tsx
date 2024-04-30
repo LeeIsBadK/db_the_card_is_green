@@ -3,7 +3,7 @@ import supabase from '../server/App';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({setToken}:any) => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const navigate = useNavigate();
@@ -25,6 +25,7 @@ const Login = () => {
         } else {
             console.log(data);
             localStorage.setItem('token', JSON.stringify(data));
+            setToken(data);
             alert('Log in successful');
             navigate('/')
         }
