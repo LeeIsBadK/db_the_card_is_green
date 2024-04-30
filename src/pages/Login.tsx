@@ -3,7 +3,7 @@ import supabase from '../server/App';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({setToken}: {setToken: any}) => {
+const Login = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const navigate = useNavigate();
@@ -24,9 +24,9 @@ const Login = ({setToken}: {setToken: any}) => {
             alert('Error signing up');
         } else {
             console.log(data);
-            alert('Sign up successful');
-            setToken(data)
-            navigate('/home')
+            localStorage.setItem('token', JSON.stringify(data));
+            alert('Log in successful');
+            navigate('/')
         }
     }
 
@@ -47,7 +47,7 @@ const Login = ({setToken}: {setToken: any}) => {
                     </label>
                     <div className="flex justify-center">
                         <button type="button" className='border w-32 rounded-md bg-green-500 hover:bg-green-600' onClick={handleSignUp}>
-                            Sign Up
+                            Log in
                         </button>
                     </div>
                     <div className='mt-5'> Are you not have account</div> <Link to="/signup" className='text-blue-500 underline'>Sign up</Link>

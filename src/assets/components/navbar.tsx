@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
 
 const handleLogout = () => {
-    sessionStorage.removeItem('token')
+    localStorage.removeItem('token')
 }
 
 function Navbbar() {
-    const token = sessionStorage.getItem('token')
+    const token = JSON.parse(localStorage.getItem('token')|| '')
     return (
         <nav className="Box w-full h-20 bg-emerald-600">
         <ul className="flex justify-center items-center h-full">
           <li className="mx-4 ">
-            {token && <Link to="/home" className="text-white">
+            {token && <Link to="/" className="text-white">
               Home
             </Link>}
           </li>

@@ -8,7 +8,7 @@ function Create () {
     const [description, setDescription] = useState('')
     const [formError, setError] = useState<string|null>(null)
     const [info, setInfo] = useState("")
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     const usertoken = JSON.parse(token || '{}')
     const user_id = usertoken.user.id
 
@@ -25,7 +25,7 @@ function Create () {
             return
         }
         const { error } = await supabase
-            .from('decks')
+            .from('Decks')
             .insert([{user_id,name, description}])
         
         if (error) {
@@ -35,7 +35,7 @@ function Create () {
         else{
             setError(null)
             navigate('/home')
-            alert("Gacha updated successfully")
+            alert("Deck updated successfully")
         }
         
     }
