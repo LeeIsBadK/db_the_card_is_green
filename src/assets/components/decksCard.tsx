@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const gachaCard = (decks:any) => {
     return (
-        <div className="my-3 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" key={decks.id}>
+        <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" key={decks.id}>
         <h3 className="text-white">{decks.name}</h3>
         <p className="text-white">{decks.description}</p>
         <div className="buttons">

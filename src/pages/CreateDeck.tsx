@@ -25,7 +25,7 @@ function Create () {
             return
         }
         const { error } = await supabase
-            .from('decks')
+            .from('Decks')
             .insert([{user_id,name, description}])
         
         if (error) {
@@ -35,7 +35,7 @@ function Create () {
         else{
             setError(null)
             navigate('/home')
-            alert("Gacha updated successfully")
+            alert("Deck updated successfully")
         }
         
     }

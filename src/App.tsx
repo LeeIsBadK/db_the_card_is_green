@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link} from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Homepage from "./pages/Homepage";
@@ -40,7 +40,7 @@ function App() {
     {Navbbar()}
       <Routes>
         {token ? (
-          <Route path="/home" element={<Homepage />} />
+          <Route path="/home" element={<Homepage/>} />
         ) : (
           <Route path="/login" element={<Login setToken={setToken} />} />
         )}

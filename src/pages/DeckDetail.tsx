@@ -10,8 +10,9 @@ function DeckEdit() {
     const [description, setDescription] = useState('')
     const [formError, setError] = useState<string | null>(null)
     const [searchName, setSearchName] = useState('')
-    const [searchResult, setSearchResult] = useState(null)
+    const [searchResult, setSearchResult] = useState([])
     const [SearchError, setSearchError] = useState<string | null>(null)
+    const [cards, setCards] = useState(null)
 
     useEffect(() => {
         const token = sessionStorage.getItem('token')
@@ -31,7 +32,7 @@ function DeckEdit() {
         }
         const fetchDeck = async () => {
             const { data, error } = await supabase
-                .from('decks')
+                .from('Decks')
                 .select()
                 .eq('id', id)
                 .single()
@@ -50,7 +51,25 @@ function DeckEdit() {
             }
         }
 
+        // const fetchCards = async () => {
+        //     const { data, error } = await supabase
+        //         .from('Cards')
+        //         .select()
+        //         .eq('deck_id', id)
+
+        //     if (error) {
+        //         console.log(error)
+        //         setError('Could not fetch cards')
+        //         return
+        //     }
+        //     if (data) {
+        //         console.log(data)
+        //         setCards(data)
+        //     }
+        // }
+
         fetchDeck()
+        //fetchCards()
 
 
     }, [id, navigate])
@@ -65,7 +84,7 @@ function DeckEdit() {
         }
 
         const { data, error } = await supabase
-            .from('decks')
+            .from('Decks')
             .update({ name: title, description: description })
             .eq('id', id)
 
@@ -83,7 +102,7 @@ function DeckEdit() {
 
     const handleDelete = async () => {
         const { error } = await supabase
-            .from('decks')
+            .from('Decks')
             .delete()
             .eq('id', id)
 
@@ -100,7 +119,7 @@ function DeckEdit() {
 
     const handleSearch = async (e: any) => {
         e.preventDefault()
-        setSearchResult(null)
+        setSearchResult([])
         setSearchError(null)
         console.log(searchName)
         const req = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=${searchName}`)
@@ -150,7 +169,7 @@ function DeckEdit() {
                     <button className="border border-black" type="submit" onClick={handleSearch}>Search</button>
                 </form>
                 <div className="grid grid-cols-8 px-10 gap-2">
-                    {searchResult && searchResult.map((card: any) => (
+                    {searchResult && Array.isArray(searchResult) && searchResult.map((card: any) => (
                         <div key={card.id} className="my-3 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-500 dark:border-gray-400 dark:hover:bg-gray-400" >
                             <div className="w-full flex justify-center">
                                 <img src={card.card_images[0].image_url} alt={card.name} className="h-40 content-center" />
@@ -162,6 +181,11 @@ function DeckEdit() {
                         </div>
                     ))}
                     {SearchError && <p>{SearchError}</p>}
+                </div>
+                <div>
+                    <p>
+                        {cards}
+                    </p>
                 </div>
             </div>
         </>

@@ -6,12 +6,12 @@ function EditDeck() {
     const { id } = useParams()
     const navigate = useNavigate()
 
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [formError, setError] = useState<string | null>(null)
-    const [searchName, setSearchName] = useState('')
-    const [searchResult, setSearchResult] = useState(null)
-    const [SearchError, setSearchError] = useState<string | null>(null)
+    // const [title, setTitle] = useState('')
+    // const [description, setDescription] = useState('')
+    // const [formError, setError] = useState<string | null>(null)
+    // const [searchName, setSearchName] = useState('')
+    // const [searchResult, setSearchResult] = useState(null)
+    // const [SearchError, setSearchError] = useState<string | null>(null)
 
     useEffect(() => {
         if (!sessionStorage.getItem('token')) {
@@ -23,7 +23,7 @@ function EditDeck() {
         }
         const fetchDeck = async () => {
             const { data, error } = await supabase
-                .from('cards')
+                .from('Cards')
                 .select()
                 .eq('id', id)
 
@@ -31,13 +31,15 @@ function EditDeck() {
                 alert('Could not fetch card')
                 navigate('/', { replace: true })
             }
+            if (data){
+
+            }
         }
 
         fetchDeck()
     })
     return (
         <>
-            <div> test</div>
         </>
     )
 }
