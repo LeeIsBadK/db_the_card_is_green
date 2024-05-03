@@ -109,7 +109,6 @@ function DeckEdit() {
     const handleSearch = async (e: any) => {
         e.preventDefault()
         setSearchResult([])
-        setSearchResult([])
         setSearchError(null)
         console.log(searchName)
         const req = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=${searchName}`)
