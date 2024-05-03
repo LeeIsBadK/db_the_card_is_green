@@ -1,6 +1,7 @@
 import supabase from "../server/App";
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Navbar from "../assets/components/navbar";
 
 function EditDeck() {
     const { id } = useParams()
@@ -14,22 +15,39 @@ function EditDeck() {
     // const [SearchError, setSearchError] = useState<string | null>(null)
 
     useEffect(() => {
-        if (!id) {
-            navigate('/', { replace: true })
-            return
-        }
+        console.log(id)
+        const auth = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token')|| "null")
+        const user_id = auth.user.id
         const fetchDeck = async () => {
             const { data, error } = await supabase
-                .from('Cards')
+                .from('Decks')
                 .select()
                 .eq('id', id)
+                .single()
 
             if (error) {
-                alert('Could not fetch card')
-                navigate('/', { replace: true })
+                console.log(error)
+                navigate('/', { replace: false })
             }
-            if (data){
-
+            if (data) {
+                console.log(data)
+                if (data.user_id !== user_id) {
+                    navigate('/', { replace: true })
+                    return
+                }
+                // setTitle(data.name)
+                // setDescription(data.description)
+            }
+            const { data: cards, error: cardError } = await supabase
+                .from('Cards')
+                .select()
+                .eq('deck_id', id)
+            if (cardError) {
+                console.log(cardError)
+                return
+            }
+            if (cards) {
+                console.log(cards)
             }
         }
 
@@ -37,6 +55,7 @@ function EditDeck() {
     })
     return (
         <>
+            <Navbar />
         </>
     )
 }

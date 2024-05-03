@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import supabase from "../server/App"
 import { useNavigate } from "react-router-dom"
+import Navbar from "../assets/components/navbar"
 
 
 function Create () {
@@ -8,9 +9,8 @@ function Create () {
     const [description, setDescription] = useState('')
     const [formError, setError] = useState<string|null>(null)
     const [info, setInfo] = useState("")
-    const token = localStorage.getItem('token')
-    const usertoken = JSON.parse(token || '{}')
-    const user_id = usertoken.user.id
+    const auth = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token')|| "null")
+    const user_id = auth.user.id
 
 
     const navigate = useNavigate()
@@ -34,22 +34,16 @@ function Create () {
         }
         else{
             setError(null)
-            navigate('/home')
+            navigate('/')
             alert("Deck updated successfully")
         }
-        
     }
 
-    useEffect(() => {
-        if (!token) {
-            navigate('/login', { replace: true })
-            return
-        }
-    }, [token, navigate])
     
 
   return (
-    <>
+    <>  
+        <Navbar />
         <div className="form">
             <form className="grid p-5 gap-2" onSubmit={handleSubmit}>
                 <label className="grid-cols-2 gap-2">

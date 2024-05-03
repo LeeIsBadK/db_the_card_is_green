@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import supabase from "../server/App";
+import Navbar from "../assets/components/navbar";
 
 function DeckEdit() {
     const { id } = useParams()
@@ -15,9 +16,8 @@ function DeckEdit() {
     const [cards, setCards] = useState<any[]>([])
 
     useEffect(() => {
-        const token = JSON.parse(localStorage.getItem('token')|| "null")
-        const jsonToken = token ? token : null
-        console.log(jsonToken)
+        const auth = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token')|| "null")
+        const user_id = auth.user.id
 
         const fetchDeck = async () => {
             const { data, error } = await supabase
@@ -27,13 +27,12 @@ function DeckEdit() {
                 .single()
 
             if (error) {
-                alert('Could not fetch deck')
                 console.log(error)
                 navigate('/', { replace: false })
             }
             if (data) {
                 console.log(data)
-                if (data.user_id !== jsonToken.user.id) {
+                if (data.user_id !== user_id) {
                     navigate('/', { replace: true })
                     return
                 }
@@ -125,6 +124,7 @@ function DeckEdit() {
 
     return (
         <>
+            <Navbar/>
             <p>ID-{id}</p>
             <div className="bg-slate-400 flex w-fit rounded-md mx-10">
                 <form className="grid p-5 gap-2" onSubmit={handleSubmit}>
