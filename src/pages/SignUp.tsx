@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import supabase from '../server/App';
 import { useState } from 'react';
+import Footer from '../assets/components/footer';
 const SignUp = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
@@ -28,7 +29,7 @@ const SignUp = () => {
 
     return (
         <>
-            <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+            <div className="flex h-[85vh] flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign up</h2>
                 </div>
@@ -64,6 +65,7 @@ const SignUp = () => {
                     </p>
                 </div>
             </div>
+            <Footer/>
         </>
 
     );

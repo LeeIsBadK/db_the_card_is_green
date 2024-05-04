@@ -2,7 +2,7 @@ import { useState } from "react"
 import supabase from "../server/App"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../assets/components/navbar"
-
+import Footer from "../assets/components/footer"
 
 function Create () {
     const [name, setName] = useState('')
@@ -44,7 +44,7 @@ function Create () {
   return (
     <>  
         <Navbar />
-        <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="flex min-h-[85vh] flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Create deck</h2>
                 </div>
@@ -77,6 +77,7 @@ function Create () {
             </div>
         {formError && <p>{formError}</p>}
         {info && <p>{info}</p>}
+        <Footer/>
     </>
   );
 }
