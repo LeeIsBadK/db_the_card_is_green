@@ -10,10 +10,12 @@ function Home() {
   const [orderBy, setOrderBy] = React.useState("created_at")
   const [ascending, setAscending] = React.useState(false)
   const [numDecks, setNumDecks] = React.useState(0)
+  const [isLoaded, setIsLoaded] = React.useState(false)
 
 
   useEffect(() => {
     async function fecthDeck() {
+      setIsLoaded(true)
       const local_sesion = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token') || "null")
       const id = local_sesion.user.id
       if (!id) {
@@ -38,6 +40,7 @@ function Home() {
       }
     }
     fecthDeck()
+    setIsLoaded(false)
 
   }, [orderBy, ascending])
 
@@ -45,6 +48,12 @@ function Home() {
     <>
       <Navbar />
       {fetchError && <p>{fetchError}</p>}
+      {isLoaded &&
+        <div className="flex flex-row gap-2 pt-32" key={"loader"}>
+          <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]"></div>
+          <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.3s]"></div>
+          <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]"></div>
+        </div>}
       <header className="bg-gray-50">
         <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
           <div className="sm:flex sm:items-center sm:justify-between">
@@ -97,7 +106,7 @@ function Home() {
             <span className="relative z-10 bg-white px-6">Result {numDecks} {numDecks <= 1 ? "deck" : "decks"}</span>
           </span>
           {/* list of decks section*/}
-          <div className="pt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 px-[2%] lg:px-[10%]">
+          <div className="pt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 px-[2%] lg:px-[10%]" key={"item"}>
             {deck.map((item: any) => {
               return deckCard(item);
             })}

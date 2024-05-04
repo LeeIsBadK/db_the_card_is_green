@@ -17,11 +17,10 @@ function Navbar() {
 
   return (
     <>
-      <header className="bg-gradient-to-r  from-cyan-100 to-rose-100">
+      <header className="bg-gradient-to-r  from-gray-300 to-rose-100">
         <div className="mx-auto flex h-16 max-w-screen-2xl w-full items-center gap-8 px-4 sm:px-6 lg:px-8">
           <Link to="/" className="block text-teal-600">
-            <span className="sr-only">Home</span>
-            <img src="src\assets\YGO-backcard.png" className="w-10" alt="home"/>
+            <img src=".\src\assets\YGO-backcard.png" className="w-10" alt="home"/>
           </Link>
 
           <div className="flex flex-1 items-center justify-end md:justify-between">

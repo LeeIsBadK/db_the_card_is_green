@@ -14,9 +14,10 @@ function DeckEdit() {
     const [searchResult, setSearchResult] = useState([])
     const [SearchError, setSearchError] = useState<string | null>(null)
     const [cards, setCards] = useState<any[]>([])
+    const [isEdit, setIsEdit] = useState(false)
 
     useEffect(() => {
-        const auth = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token')|| "null")
+        const auth = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token') || "null")
         const user_id = auth.user.id
 
         const fetchDeck = async () => {
@@ -53,7 +54,7 @@ function DeckEdit() {
                 return
             }
             if (data) {
-                console.log("Card",data)
+                console.log("Card", data)
                 setCards(data)
             }
         }
@@ -113,7 +114,7 @@ function DeckEdit() {
         console.log(searchName)
         const req = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=${searchName}`)
         const res = await req.json()
-        if (res.error){
+        if (res.error) {
             setSearchError('No card found')
             return
         }
@@ -123,7 +124,41 @@ function DeckEdit() {
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
+            
+            <div className="flow-root w-[80%] lg:w-[60%] px-[4%] lg:px-[10%] pt-12 sm:pt-16" id="detail">
+                <label htmlFor="detail" className="block text-medium font-medium text-gray-900 pb-3"> Detail deck ID:{id}</label>
+                <dl className="-my-3 divide-y divide-gray-100 text-sm">
+                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 ah-auto">
+                        <dt className="font-medium text-gray-900 col-span-2">Title</dt>
+                        <dd className="text-gray-700 sm:col-span-4">{title}</dd>
+                        {isEdit &&<div className="grid grid-rows"> New description: <input type="text" className="border rounded rounded-md" defaultValue={title} onChange={(e) => setTitle(e.target.value)} /> </div>}
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 h-auto">
+                        <dt className="font-medium text-gray-900 col-span-2">Description</dt>
+                        <dd className="text-gray-700 sm:col-span-4">
+                            {description}
+                        </dd>
+                        {isEdit &&<div className="grid grid-rows"> New description:
+                            <input type="text" className="border  h-full rounded rounded-md" defaultValue={description} onChange={(e) => setDescription(e.target.value)} />
+                        </div>}
+                             
+                    </div>
+                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 h-auto">
+                        <dt className="font-medium text-gray-900 col-span-2">Number of cards</dt>
+                        <dd className="text-gray-700 sm:col-span-4">{cards.length}</dd>
+                    </div>
+                    <div className="grid grid-cols-3 py-3 sm:grid-cols-6 sm:gap-2">
+                        <button className="transition delay-50 border border-2 border-gray-300 hover:bg-gray-300 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={() => setIsEdit(!isEdit)}>Edit</button>
+                        {isEdit && <button className="transition delay-50 border border-2 border-yellow-300 hover:bg-yellow-300 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={handleSubmit}>Update</button>}
+                        {isEdit && <button className="transition delay-50 border border-2 border-red-300 hover:bg-red-600 hover:border-red-600 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={handleDelete}>Delete</button>}
+                    </div>
+                    
+                    
+                </dl>
+            </div>
+            {/*             
             <p>ID-{id}</p>
             <div className="bg-slate-400 flex w-fit rounded-md mx-10">
                 <form className="grid p-5 gap-2" onSubmit={handleSubmit}>
@@ -141,7 +176,7 @@ function DeckEdit() {
                     </div>
                     
                 </form>
-            </div>
+            </div> */}
             {formError && <p>{formError}</p>}
             <div>
                 My Deck:
@@ -151,13 +186,13 @@ function DeckEdit() {
                 <Link to={"./edit"}> Edit deck </Link>
             </div>
             <div>
-                    <p> Number of cards: {cards.length} </p>
-                </div>
+                <p> Number of cards: {cards.length} </p>
+            </div>
             <div>
                 <form className="grid p-5 gap-2">
-                <label className="grid-cols-2 gap-2">
+                    <label className="grid-cols-2 gap-2">
                         Name:
-                        <input type="text" className="border" onChange={(e) => setSearchName(e.target.value)}/>
+                        <input type="text" className="border" onChange={(e) => setSearchName(e.target.value)} />
                     </label>
                     <button className="border border-black" type="submit" onClick={handleSearch}>Search</button>
                 </form>
