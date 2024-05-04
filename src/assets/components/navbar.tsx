@@ -7,8 +7,9 @@ import { useState } from "react";
 
 function Navbar() {
   const getlocal = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token') || "null")
+  if (!getlocal) return
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const email = getlocal.user.user_metadata.email
+  const email = getlocal.user? getlocal.user.user_metadata ? getlocal.user.user_metadata.email ? getlocal.user.user_metadata.email : "null" : "null" : "null"
   const handleLogout = () => {
     supabase.auth.signOut()
     window.location.href = '/login'
