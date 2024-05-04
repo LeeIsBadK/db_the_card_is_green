@@ -7,6 +7,7 @@ import { useState } from "react";
 
 function Navbar() {
   const getlocal = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token') || "null")
+  const ygo_back = "public\YGO-backcard.png"
   if (!getlocal) return
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const email = getlocal.user? getlocal.user.user_metadata ? getlocal.user.user_metadata.email ? getlocal.user.user_metadata.email : "null" : "null" : "null"
@@ -20,7 +21,7 @@ function Navbar() {
       <header className="bg-gradient-to-r  from-gray-300 to-rose-100">
         <div className="mx-auto flex h-16 max-w-screen-2xl w-full items-center gap-8 px-4 sm:px-6 lg:px-8">
           <Link to="/" className="block text-teal-600">
-            <img src="public\YGO-backcard.png" className="w-10" alt="home"/>
+            <img src={ygo_back} className="w-10" alt="home"/>
           </Link>
 
           <div className="flex flex-1 items-center justify-end md:justify-between">
