@@ -1,14 +1,19 @@
-import { Link } from "react-router-dom";
-
-const gachaCard = (decks:any) => {
+const gachaCard = (decks: any) => {
     return (
-        <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" key={decks.id}>
-        <h3 className="text-white">{decks.name}</h3>
-        <p className="text-white">{decks.description}</p>
-        <div className="buttons">
-            <Link to={`/${decks.id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">Edit</Link>
+        <div
+            className="cursor-pointer transition-all duration-500 hover:translate-y-2 hover:bg-stone-600 h-40 bg-stone-400 rounded-lg shadow-xl flex flex-row items-center justify-evenly gap-4 px-4" key={decks.id}
+            onClick={() => window.location.href = `/${decks.id}`}
+        >
+            <img src='.\src\assets\components\YGO-backcard.png' alt="deck" className="w-20" />
+  
+            <div className="w-36">
+                <span className="font-bold text-teal-950 text-xl">{decks.name}</span>
+                <p className="line-clamp-3">
+                    Description: {decks.description}
+                </p>
+            </div>
         </div>
-        </div>
+
     );
 }
 export default gachaCard;

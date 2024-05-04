@@ -148,7 +148,7 @@ function DeckEdit() {
             </div>
 
             <div>
-                <Link to={`./edit`}> Edit deck </Link>
+                <Link to={"./edit"}> Edit deck </Link>
             </div>
             <div>
                     <p> Number of cards: {cards.length} </p>
