@@ -7,7 +7,7 @@ import { useState } from "react";
 
 function Navbar() {
   const getlocal = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token') || "null")
-  const ygo_back = "public\YGO-backcard.png"
+  const ygo_back = "/YGO-backcard.png"
   if (!getlocal) return
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const email = getlocal.user? getlocal.user.user_metadata ? getlocal.user.user_metadata.email ? getlocal.user.user_metadata.email : "null" : "null" : "null"

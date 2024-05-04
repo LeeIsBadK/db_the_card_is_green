@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const gachaCard = (decks: any) => {
-    const ygo_back = "public\YGO-backcard.png"
+    const ygo_back = "/YGO-backcard.png"
     return (
         <Link to={`/${decks.id}`} key={decks.id}>
             <div
