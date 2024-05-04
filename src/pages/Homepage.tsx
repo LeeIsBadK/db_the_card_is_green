@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import deckCard from "../assets/components/decksCard";
 import Navbar from "../assets/components/navbar";
 import { Link } from "react-router-dom";
+import Footer from "../assets/components/footer";
 
 function Home() {
   const [deck, setDeck] = React.useState<any | null>(null)
@@ -34,13 +35,14 @@ function Home() {
         return;
       }
       if (data) {
+        console.log(data);
         setDeck(data);
         setNumDecks(data.length);
         setFetchError(null);
+        setIsLoaded(false)
       }
     }
     fecthDeck()
-    setIsLoaded(false)
 
   }, [orderBy, ascending])
 
@@ -48,34 +50,28 @@ function Home() {
     <>
       <Navbar />
       {fetchError && <p>{fetchError}</p>}
-      {isLoaded &&
-        <div className="flex flex-row gap-2 pt-32" key={"loader"}>
-          <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]"></div>
-          <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.3s]"></div>
-          <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]"></div>
-        </div>}
-      <header className="bg-gray-50">
-        <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-          <div className="sm:flex sm:items-center sm:justify-between">
-            <div className="text-center sm:text-left">
-              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">Your decks Here!</h1>
+        < header className="bg-gray-50">
+          <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+            <div className="sm:flex sm:items-center sm:justify-between">
+              <div className="text-center sm:text-left">
+                <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">Your decks Here!</h1>
 
-              <p className="mt-1.5 text-sm text-gray-500">Let's fun with duel 🎉</p>
-            </div>
+                <p className="mt-1.5 text-sm text-gray-500">Let's fun with duel 🎉</p>
+              </div>
 
-            <div className="mt-4 flex flex-col gap-4 sm:mt-0 sm:flex-row sm:items-center">
-              <Link to="/create" className="w-[100%]">
-                <button
-                  className="block rounded-lg align-middle w-full border-teal-600 border-2 px-10 text-sm font-medium text-teal-600 hover:text-white transition hover:bg-teal-600 focus:outline-none focus:ring h-10"
-                  type="button"
-                >
-                  Create Deck
-                </button>
-              </Link>
+              <div className="mt-4 flex flex-col gap-4 sm:mt-0 sm:flex-row sm:items-center">
+                <Link to="/create" className="w-[100%]">
+                  <button
+                    className="block rounded-lg align-middle w-full border-teal-600 border-2 px-10 text-sm font-medium text-teal-600 hover:text-white transition hover:bg-teal-600 focus:outline-none focus:ring h-10"
+                    type="button"
+                  >
+                    Create Deck
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header >
       {deck && (
         <>
           {/* sort section*/}
@@ -106,13 +102,16 @@ function Home() {
             <span className="relative z-10 bg-white px-6">Result {numDecks} {numDecks <= 1 ? "deck" : "decks"}</span>
           </span>
           {/* list of decks section*/}
+          {!isLoaded &&
           <div className="pt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 px-[2%] lg:px-[10%]" key={"item"}>
             {deck.map((item: any) => {
               return deckCard(item);
             })}
-          </div>
+          </div>}
         </>
-      )}
+      )
+      }
+      <Footer />
     </>
   );
 }

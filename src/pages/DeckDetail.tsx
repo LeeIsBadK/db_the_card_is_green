@@ -10,11 +10,7 @@ function DeckEdit() {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [formError, setError] = useState<string | null>(null)
-    const [searchName, setSearchName] = useState('')
-    const [searchResult, setSearchResult] = useState([])
-    const [SearchError, setSearchError] = useState<string | null>(null)
     const [cards, setCards] = useState<any[]>([])
-    const [isEdit, setIsEdit] = useState(false)
 
     useEffect(() => {
         const auth = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token') || "null")
@@ -65,74 +61,69 @@ function DeckEdit() {
 
     }, [id, navigate])
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault()
-        setError('')
 
-        if (!title || !description) {
-            setError('Please fill out all fields')
-            return
-        }
 
-        const { error } = await supabase
-            .from('Decks')
-            .update({ name: title, description: description })
-            .eq('id', id)
-
-        if (error) {
-            console.error(error)
-            setError('Could not update deck')
-            return
-        }
-        else {
-            alert('Deck updated successfully')
-            navigate('/', { replace: true })
-        }
-    }
-
-    const handleDelete = async () => {
-        const { error } = await supabase
-            .from('Decks')
-            .delete()
-            .eq('id', id)
-
-        if (error) {
-            console.log(error)
-            setError('Could not delete deck')
-            return
-        }
-        else {
-            alert('deck deleted successfully')
-            navigate('/home', { replace: true })
-        }
-    }
-
-    const handleSearch = async (e: any) => {
-        e.preventDefault()
-        setSearchResult([])
-        setSearchError(null)
-        console.log(searchName)
-        const req = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=${searchName}`)
-        const res = await req.json()
-        if (res.error) {
-            setSearchError('No card found')
-            return
-        }
-        setSearchResult(res.data)
-    }
 
 
     return (
         <>
             <Navbar />
-            
-            <div className="flow-root w-[80%] lg:w-[60%] px-[4%] lg:px-[10%] pt-12 sm:pt-16" id="detail">
+            <div className="w-[80%] lg:w-[60%] px-[4%] lg:px-[10%] pt-6">
+                {/* {Breadcrum} */}
+                <nav aria-label="Breadcrumb" className="pb-6">
+                    <ol className="flex items-center gap-1 text-sm text-gray-600">
+                        <li>
+                            <a href="/" className="block transition hover:text-gray-700">
+                                <span className="sr-only"> Home </span>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                                    />
+                                </svg>
+                            </a>
+                        </li>
+
+                        <li className="rtl:rotate-180">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-4 w-4"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+                        </li>
+
+                        <li>
+                            <p className="block transition hover:text-gray-700"> {title} </p>
+                        </li>
+
+
+                    </ol>
+                </nav>
+
+
+            <div className="flow-root" id="detail">
                 <label htmlFor="detail" className="block text-medium font-medium text-gray-900 pb-3"> Detail deck ID:{id}</label>
                 <dl className="-my-3 divide-y divide-gray-100 text-sm">
                     <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 ah-auto">
                         <dt className="font-medium text-gray-900 col-span-2">Title</dt>
                         <dd className="text-gray-700 sm:col-span-4">{title}</dd>
-                        {isEdit &&<div className="grid grid-rows"> New description: <input type="text" className="border rounded rounded-md" defaultValue={title} onChange={(e) => setTitle(e.target.value)} /> </div>}
+                
                     </div>
 
                     <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 h-auto">
@@ -140,9 +131,6 @@ function DeckEdit() {
                         <dd className="text-gray-700 sm:col-span-4">
                             {description}
                         </dd>
-                        {isEdit &&<div className="grid grid-rows"> New description:
-                            <input type="text" className="border  h-full rounded rounded-md" defaultValue={description} onChange={(e) => setDescription(e.target.value)} />
-                        </div>}
                              
                     </div>
                     <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 h-auto">
@@ -150,14 +138,22 @@ function DeckEdit() {
                         <dd className="text-gray-700 sm:col-span-4">{cards.length}</dd>
                     </div>
                     <div className="grid grid-cols-3 py-3 sm:grid-cols-6 sm:gap-2">
-                        <button className="transition delay-50 border border-2 border-gray-300 hover:bg-gray-300 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={() => setIsEdit(!isEdit)}>Edit</button>
-                        {isEdit && <button className="transition delay-50 border border-2 border-yellow-300 hover:bg-yellow-300 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={handleSubmit}>Update</button>}
-                        {isEdit && <button className="transition delay-50 border border-2 border-red-300 hover:bg-red-600 hover:border-red-600 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={handleDelete}>Delete</button>}
+                        <Link to="./edit">
+                            <button className="transition shadow-md cursor-pointer transition-all duration-500 hover:translate-y-0.5 delay-50 col-span-2 border border-2 border-gray-300 hover:bg-gray-300 hover:text-white w-60 h-10 rounded col-span-1 px-2" type="submit">Edit or Add/Delete card</button>
+                        </Link>
                     </div>
                     
                     
                 </dl>
             </div>
+
+            <span className="relative flex justify-center lg:pt-12">
+            <div
+              className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-gray-500 to-transparent opacity-75"
+            ></div>
+
+            <span className="relative z-10 bg-white px-6"></span>
+          </span>
             {/*             
             <p>ID-{id}</p>
             <div className="bg-slate-400 flex w-fit rounded-md mx-10">
@@ -178,44 +174,11 @@ function DeckEdit() {
                 </form>
             </div> */}
             {formError && <p>{formError}</p>}
-            <div>
+            <p className="font-semibold pt-10 text-3xl">
                 My Deck:
+            </p>
             </div>
-
-            <div>
-                <Link to={"./edit"}> Edit deck </Link>
-            </div>
-            <div>
-                <p> Number of cards: {cards.length} </p>
-            </div>
-            <div>
-                <form className="grid p-5 gap-2">
-                    <label className="grid-cols-2 gap-2">
-                        Name:
-                        <input type="text" className="border" onChange={(e) => setSearchName(e.target.value)} />
-                    </label>
-                    <button className="border border-black" type="submit" onClick={handleSearch}>Search</button>
-                </form>
-                <div className="grid grid-cols-8 px-10 gap-2">
-                    {searchResult && Array.isArray(searchResult) && searchResult.map((card: any) => (
-                        <div key={card.id} className="my-3 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-500 dark:border-gray-400 dark:hover:bg-gray-400" >
-                            <div className="w-full flex justify-center">
-                                <img src={card.card_images[0].image_url} alt={card.name} className="h-40 content-center" />
-                            </div>
-                            <p className="text-white pt-1 object-fill">{card.name}</p>
-                            {/*<p className="text-white" >Card type:{card.type}</p>
-                            {/*<p className="text-white text-[0.5rem]" >Description: {card.desc}</p> */
-                            }
-                        </div>
-                    ))}
-                    {SearchError && <p>{SearchError}</p>}
-                </div>
-                <div>
-                    <p>
-                        {JSON.stringify(cards)}
-                    </p>
-                </div>
-            </div>
+            
         </>
     )
 }
