@@ -208,7 +208,7 @@ function EditDeck() {
                         </li>
 
                         <li>
-                            <a href="javascript:history.back()" className="block transition hover:text-gray-700"> {title} </a>
+                            <div className="block transition hover:text-gray-700 cursor-pointer" onClick={_e => navigate(`/${id}`)}> {title} </div>
                         </li>
 
                         <li className="rtl:rotate-180">
@@ -239,7 +239,7 @@ function EditDeck() {
                         <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 ah-auto">
                             <dt className="font-medium text-gray-900 col-span-2">Title</dt>
                             <dd className="text-gray-700 sm:col-span-4">{title}</dd>
-                            {isEdit && <div className="grid grid-rows"> New description: <input type="text" className="border rounded rounded-md" defaultValue={title} onChange={(e) => setCurrentTitle(e.target.value)} /> </div>}
+                            {isEdit && <div className="grid grid-rows"> New description: <input type="text" className="border rounded-md" defaultValue={title} onChange={(e) => setCurrentTitle(e.target.value)} /> </div>}
                         </div>
 
                         <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 h-auto">
@@ -248,7 +248,7 @@ function EditDeck() {
                                 {description}
                             </dd>
                             {isEdit && <div className="grid grid-rows"> New description:
-                                <input type="text" className="border  h-full rounded rounded-md" defaultValue={description} onChange={(e) => setCurrentDescription(e.target.value)} />
+                                <input type="text" className="border  h-full rounded-md" defaultValue={description} onChange={(e) => setCurrentDescription(e.target.value)} />
                             </div>}
 
                         </div>
@@ -257,9 +257,9 @@ function EditDeck() {
                             <dd className="text-gray-700 sm:col-span-4">{cards.length}</dd>
                         </div>
                         <div className="grid grid-cols-3 py-3 sm:grid-cols-6 sm:gap-2">
-                            <button className="transition shadow-sm cursor-pointer transition-all duration-500 hover:translate-y-0.5 delay-50 border border-2 border-gray-300 hover:bg-gray-300 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={() => setIsEdit(!isEdit)}>Edit</button>
-                            {isEdit && <button className="transition shadow-sm cursor-pointer transition-all duration-500 hover:translate-y-0.5 delay-50 border border-2 border-yellow-300 hover:bg-yellow-300 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={handleEditDeckDetail}>Update</button>}
-                            {isEdit && <button className="transition shadow-sm cursor-pointer transition-all duration-500 hover:translate-y-0.5 delay-50 border border-2 border-red-300 hover:bg-red-600 hover:border-red-600 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={handleDelete}>Delete</button>}
+                            <button className=" shadow-sm cursor-pointer transition-all duration-500 hover:translate-y-0.5 delay-50 border-2 border-gray-300 hover:bg-gray-300 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={() => setIsEdit(!isEdit)}>Edit</button>
+                            {isEdit && <button className=" shadow-sm cursor-pointer transition-all duration-500 hover:translate-y-0.5 delay-50 border-2 border-yellow-300 hover:bg-yellow-300 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={handleEditDeckDetail}>Update</button>}
+                            {isEdit && <button className=" shadow-sm cursor-pointer transition-all duration-500 hover:translate-y-0.5 delay-50 border-2 border-red-300 hover:bg-red-600 hover:border-red-600 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={handleDelete}>Delete</button>}
                         </div>
                         {formError && <p>{formError}</p>}
                     </dl>
@@ -346,7 +346,7 @@ function EditDeck() {
                                     <div className="grid grid-rows-1 align-center row-end-auto">
                                         <p className="text-white text-sm pt-1 row-span-1 truncate">{card.name}</p>
                                         <div className="text-white text-xs pt-1 h-full row-span-1 size-fit justify-center" >{card.type}</div>
-                                        <button className="transition delay-50  h-10 w-full row-span-1 border border-2 border-gray-300 bg-gray-200 hover:bg-green-600 hover:border-green-600 hover:text-white w-16 rounded col-span-1 px-2" type="submit" onClick={_e => handleAddCard(card)}>Add</button>
+                                        <button className="transition delay-50  h-10 w-full row-span-1 border-2 border-gray-300 bg-gray-200 hover:bg-green-600 hover:border-green-600 hover:text-white rounded col-span-1 px-2" type="submit" onClick={_e => handleAddCard(card)}>Add</button>
                                     </div>
                                 </div>
                             ))}
