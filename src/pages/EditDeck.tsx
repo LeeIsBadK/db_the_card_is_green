@@ -14,18 +14,20 @@ function EditDeck() {
     const [currentDescription, setCurrentDescription] = useState('')
     const [isEdit, setIsEdit] = useState(false)
 
-    const [cards, setCards] = useState<object[]>([])
+    const [cards, setCards] = useState<any[]>([])
     const [formError, setError] = useState<string | null>(null)
     const [isLoad, setIsLoad] = useState(false)
 
+    const [cardsDetail, setCardsDetail] = useState<any[]>([])
+
     const [searchName, setSearchName] = useState('')
-    const [searchResult, setSearchResult] = useState(null)
+    const [searchResult, setSearchResult] = useState<any[]>([])
     const [SearchError, setSearchError] = useState<string | null>(null)
+
 
     const handleEditDeckDetail = async (e: any) => {
         e.preventDefault()
         setError('')
-        console.log(currentTitle)
 
         if (!currentTitle || !currentDescription) {
             setError('Please fill out all fields')
@@ -55,7 +57,7 @@ function EditDeck() {
             .eq('id', id)
 
         if (error) {
-            console.log(error)
+            console.error(error)
             setError('Could not delete deck')
             return
         }
@@ -69,100 +71,158 @@ function EditDeck() {
     const handleDeleteCard = async (card_id: any) => {
         setIsLoad(true)
         const { error } = await supabase
-            .from('Cards')
+            .from('DeckCards')
             .delete()
-            .eq('deck_id', card_id)
+            .eq('id', card_id)
 
         if (error) {
-            console.log(error)
+            console.error(error)
             setError('Could not delete card')
             setIsLoad(false)
             return
         }
-        else {
-
-        }
+        setIsLoad(false)
     }
 
     // Add card
     const handleAddCard = async (card: any) => {
-        console.log(card)
         setIsLoad(true)
-        // const { error } = await supabase
-        //     .from('Cards')
-        //     .insert([{ deck_id: id }])
+        setSearchError(null)
+        try {
+            if (!card.api_card_id || card.api_card_id === "null") {
+                console.error("Invalid card ID:", card.api_card_id);
+                setSearchError("Invalid card ID");
+                return;
+            }
+            const { data: existingCards, error: fetchError } = await supabase
+                .from('DeckCards')
+                .select('id')
+                .eq('deck_id', id)
+                .eq('api_card', card.api_card_id);
 
-        // if (error) {
-        //     console.log(error)
-        //     setError('Could not add card')
-        //     setIsLoad(false)
-        //     return
-        // }
-        // else {
-        //     setIsLoad(false)
-        // }
-        setIsLoad(false)
-    }
+            if (fetchError) {
+                console.error(fetchError);
+                setSearchError('Error checking existing cards');
+                return;
+            }
+
+            if (existingCards && existingCards.length >= 3) {
+                setSearchError('You cannot add more than 3 instances of the same card to the deck');
+                return;
+            }
+
+            const { error } = await supabase
+                .from('DeckCards')
+                .insert([{ deck_id: id, api_card: parseInt(card.api_card_id) }]); // Ensure `card.id` is parsed as a number
+
+            if (error) {
+                console.error(error);
+                setError('Could not add card');
+                return;
+            }
+
+            // Optionally, update local state or perform additional actions upon successful insertion
+            console.log('Card added successfully');
+            setIsLoad(false);
+        } catch (error) {
+            console.error('Error adding card:', error);
+            setError('An error occurred while adding the card');
+        }
+    };
+
 
     const handleSearchCard = async (e: any) => {
         e.preventDefault()
-        setSearchResult(null) // Change the initial state from null to an empty array
         setSearchError(null)
-        console.log(searchName)
-        const req = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?&num=10&offset=0&fname=${searchName}`)
-        const res = await req.json()
+        const res = await supabase
+            .from('Cards')
+            .select()
+            .ilike('name', `%${searchName}%`)
+            .limit(20)
         if (res.error) {
-            setSearchError('No card found')
+            console.error(res.error)
+            setSearchError('Could not fetch cards')
+            return
+        }
+        if (res.data.length === 0) {
+            setSearchError('No result found')
             return
         }
         setSearchResult(res.data)
-        console.log(res.data)
     }
 
     useEffect(() => {
-        console.log(id)
-        const auth = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token') || "null")
-        const user_id = auth.user.id
         const fetchDeck = async () => {
-            const { data, error } = await supabase
-                .from('Decks')
-                .select()
-                .eq('id', id)
-                .single()
+            try {
+                const auth = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token') || "null");
+                const user_id = auth.user.id;
 
-            if (error) {
-                console.log(error)
-                navigate('/', { replace: false })
-            }
-            if (data) {
-                console.log(data)
-                if (data.user_id !== user_id) {
-                    navigate('/', { replace: true })
-                    return
+                const { data, error } = await supabase
+                    .from('Decks')
+                    .select()
+                    .eq('id', id)
+                    .single();
+
+                if (error) {
+                    console.error(error);
+                    navigate('/', { replace: false });
+                    return;
                 }
-                setTitle(data.name)
-                setCurrentTitle(data.name)
-                setDescription(data.description)
-                setCurrentDescription(data.description)
-            }
-            const { data: cards, error: cardError } = await supabase
-                .from('Cards')
-                .select()
-                .eq('deck_id', id)
-                .order('name', { ascending: true })
 
-            if (cardError) {
-                console.log(cardError)
-                return
-            }
-            if (cards) {
-                console.log(cards)
-                setCards(cards)
-            }
-        }
+                if (data) {
+                    if (data.user_id !== user_id) {
+                        navigate('/', { replace: true });
+                        return;
+                    }
 
-        fetchDeck()
-    }, [id, navigate, isLoad])
+                    setTitle(data.name);
+                    setCurrentTitle(data.name);
+                    setDescription(data.description);
+                    setCurrentDescription(data.description);
+
+                    const { data: fetchedCards, error: cardError } = await supabase
+                        .from('DeckCards')
+                        .select()
+                        .eq('deck_id', id);
+
+                    if (cardError) {
+                        console.error(cardError);
+                        return;
+                    }
+
+                    if (fetchedCards) {
+                        setCards(fetchedCards);
+                        console.log(fetchedCards);
+                        const cardDetailsPromises = fetchedCards.map(async (card) => {
+                            const { data: cardData, error: cardFetchError } = await supabase
+                                .from('Cards')
+                                .select()
+                                .eq('api_card_id', card.api_card)
+                                .single();
+
+                            if (cardFetchError) {
+                                console.error(cardFetchError);
+                                throw new Error('Could not fetch cards');
+                            }
+
+                            if (cardData) {
+                                return { ...cardData, id: card.id };
+                            }
+                        });
+
+                        const cardDetails = await Promise.all(cardDetailsPromises);
+                        setCardsDetail(cardDetails.sort((a, b) => a.name.localeCompare(b.name)));
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+                setError('An error occurred while fetching deck details');
+            }
+        };
+
+        fetchDeck();
+    }, [navigate, id, isLoad]);
+
     return (
         <>
             <Navbar />
@@ -268,35 +328,35 @@ function EditDeck() {
 
                 <div className="my-1 sm:my-8 grid grid-cols-1 py-3 sm:grid-cols-5 sm:gap-2">
                     <div className="py-2 col-span-3">
-                        <p className="font-semibold">{title}'s card</p>
+                        <p className="font-semibold mb-4 text-2xl">{title}'s card</p>
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                                 <thead className="ltr:text-left rtl:text-right">
                                     <tr>
                                         <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Card Name</th>
                                         <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Type</th>
-                                        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Frametype</th>
                                         <th className="px-4 py-2"></th>
                                     </tr>
                                 </thead>
                                 {/* {Map card here} */}
-                                <tbody className="divide-y divide-gray-200" key={"text"}>
-                                    <tr>
-                                        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Exodia</td>
-                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Normal Monster</td>
-                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Normal</td>
-                                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">$120,000</td>
-                                        <td className="whitespace-nowrap px-4 py-2">
-                                            <button
-                                                className="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
-                                                onClick={() => handleDeleteCard("text")}
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
+                                {cardsDetail && Array.isArray(cardsDetail) && cardsDetail.map((card: any) => (
+                                    <tbody className="divide-y divide-gray-200" key={`${card.id}`}>
+                                        <tr className="odd:bg-gray-50">
+                                            <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{card.name}</td>
+                                            <td className="whitespace-nowrap px-4 py-2 text-gray-700">{card.type}</td>
+                                            <td className="whitespace-nowrap px-4 py-2">
+                                                <button
+                                                    type="button" // Add the type attribute with a value of "button"
+                                                    className="inline-block rounded bg-pink-600 px-4 py-2 text-xs font-medium text-white hover:bg-pink-700"
+                                                    onClick={() => handleDeleteCard(card.id)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
 
-                                </tbody>
+                                ))}
                             </table>
                         </div>
                     </div>
@@ -336,12 +396,17 @@ function EditDeck() {
                             </span>
                         </div>
                         {/* {Search Card list} */}
-                        {SearchError ? <p>{SearchError}</p> : null}
+
+                        {SearchError ? <div className="bg-red-600 px-4 py-3 text-white">
+                            <p className="text-center text-sm font-medium">
+                                ⚠️ {SearchError}
+                            </p>
+                        </div> : null}
                         <div className="grid grid-cols-2 xl:grid-cols-3 px-3 gap-2">
                             {searchResult && Array.isArray(searchResult) && (searchResult as any[]).map((card: any) => (
-                                <div key={card.id} className="my-1 w-full p-1 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-500 dark:border-gray-400 dark:hover:bg-gray-400" >
+                                <div key={`${card.api_card_id}_search`} className="my-1 w-full p-1 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-500 dark:border-gray-400 dark:hover:bg-gray-400" >
                                     <div className="w-full flex justify-center">
-                                        <img src={card.card_images[0].image_url} alt={card.name} className="content-center" />
+                                        <img src={card.card_images} alt={card.name} className="content-center" />
                                     </div>
                                     <div className="grid grid-rows-1 align-center row-end-auto">
                                         <p className="text-white text-sm pt-1 row-span-1 truncate">{card.name}</p>

@@ -75,7 +75,7 @@ function Home() {
       {deck && (
         <>
           {/* sort section*/}
-          < div className="flex flex-rows px-2 gap-2 py-8 px-[2%] lg:px-[10%]" >
+          < div className="flex flex-rows gap-2 py-8 px-[2%] lg:px-[10%]" >
             <div>
               <label htmlFor="HeadlineAct" className="block text-sm font-medium text-gray-900"> Sort by </label>
               <select

@@ -9,57 +9,82 @@ function DeckEdit() {
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
-    const [formError, setError] = useState<string | null>(null)
+
     const [cards, setCards] = useState<any[]>([])
 
+    const [cardsDetail, setCardsDetail] = useState<any[]>([])
+
+
+
+
     useEffect(() => {
-        const auth = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token') || "null")
-        const user_id = auth.user.id
-
         const fetchDeck = async () => {
-            const { data, error } = await supabase
-                .from('Decks')
-                .select()
-                .eq('id', id)
-                .single()
+            try {
+                const auth = JSON.parse(localStorage.getItem('sb-ildgjnmfhjmzeimzaqfx-auth-token') || "null");
+                const user_id = auth.user.id;
 
-            if (error) {
-                console.log(error)
-                navigate('/', { replace: false })
-            }
-            if (data) {
-                console.log(data)
-                if (data.user_id !== user_id) {
-                    navigate('/', { replace: true })
-                    return
+                const { data, error } = await supabase
+                    .from('Decks')
+                    .select()
+                    .eq('id', id)
+                    .single();
+
+                if (error) {
+                    console.error(error);
+                    navigate('/', { replace: false });
+                    return;
                 }
-                setTitle(data.name)
-                setDescription(data.description)
+
+                if (data) {
+                    if (data.user_id !== user_id) {
+                        navigate('/', { replace: true });
+                        return;
+                    }
+
+                    setTitle(data.name);
+                    setDescription(data.description);
+
+                    const { data: fetchedCards, error: cardError } = await supabase
+                        .from('DeckCards')
+                        .select()
+                        .eq('deck_id', id);
+
+                    if (cardError) {
+                        console.error(cardError);
+                        return;
+                    }
+
+                    if (fetchedCards) {
+                        setCards(fetchedCards);
+                        console.log(fetchedCards);
+                        const cardDetailsPromises = fetchedCards.map(async (card) => {
+                            const { data: cardData, error: cardFetchError } = await supabase
+                                .from('Cards')
+                                .select()
+                                .eq('api_card_id', card.api_card)
+                                .single();
+
+                            if (cardFetchError) {
+                                console.error(cardFetchError);
+                                throw new Error('Could not fetch cards');
+                            }
+
+                            if (cardData) {
+                                return { ...cardData, id: card.id };
+                            }
+                        });
+
+                        const cardDetails = await Promise.all(cardDetailsPromises);
+                        setCardsDetail(cardDetails.sort((a, b) => a.name.localeCompare(b.name)));
+                    }
+                }
+            } catch (error) {
+                console.error(error);
             }
-        }
+        };
 
-        const fetchCards = async () => {
-            const { data, error } = await supabase
-                .from('Cards')
-                .select()
-                .eq('deck_id', id)
-
-            if (error) {
-                console.log(error)
-                setError('Could not fetch cards')
-                return
-            }
-            if (data) {
-                console.log("Card", data)
-                setCards(data)
-            }
-        }
-
-        fetchDeck()
-        fetchCards()
-
-
-    }, [id, navigate])
+        fetchDeck();
+    }, [navigate, id]);
 
 
 
@@ -68,7 +93,7 @@ function DeckEdit() {
     return (
         <>
             <Navbar />
-            <div className="w-[80%] lg:w-[60%] px-[4%] lg:px-[10%] pt-6">
+            <div className=" px-[4%] lg:px-[10%] pt-6">
                 {/* {Breadcrum} */}
                 <nav aria-label="Breadcrumb" className="pb-6">
                     <ol className="flex items-center gap-1 text-sm text-gray-600">
@@ -117,69 +142,79 @@ function DeckEdit() {
                 </nav>
 
 
-            <div className="flow-root" id="detail">
-                <label htmlFor="detail" className="block text-medium font-medium text-gray-900 pb-3"> Detail deck ID:{id}</label>
-                <dl className="-my-3 divide-y divide-gray-100 text-sm">
-                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 ah-auto">
-                        <dt className="font-medium text-gray-900 col-span-2">Title</dt>
-                        <dd className="text-gray-700 sm:col-span-4">{title}</dd>
-                
-                    </div>
+                <div className="flow-root" id="detail">
+                    <label htmlFor="detail" className="block text-medium font-medium text-gray-900 pb-3"> Detail deck ID:{id}</label>
+                    <dl className="-my-3 divide-y divide-gray-100 text-sm">
+                        <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 ah-auto">
+                            <dt className="font-medium text-gray-900 col-span-2">Title</dt>
+                            <dd className="text-gray-700 sm:col-span-4">{title}</dd>
 
-                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 h-auto">
-                        <dt className="font-medium text-gray-900 col-span-2">Description</dt>
-                        <dd className="text-gray-700 sm:col-span-4">
-                            {description}
-                        </dd>
-                             
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 h-auto">
+                            <dt className="font-medium text-gray-900 col-span-2">Description</dt>
+                            <dd className="text-gray-700 sm:col-span-4">
+                                {description}
+                            </dd>
+
+                        </div>
+                        <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 h-auto">
+                            <dt className="font-medium text-gray-900 col-span-2">Number of cards</dt>
+                            <dd className="text-gray-700 sm:col-span-4">{cards.length}</dd>
+                        </div>
+                        <div className="grid grid-cols-3 py-3 sm:grid-cols-6 sm:gap-2">
+                            <Link to="./edit">
+                                <button className="transition shadow-md cursor-pointer duration-500 hover:translate-y-0.5 delay-50 border-2 border-gray-300 hover:bg-gray-300 hover:text-white w-60 h-10 rounded col-span-1 px-2" type="submit">Edit or Add/Delete card</button>
+                            </Link>
+                        </div>
+
+
+                    </dl>
+                </div>
+
+                <span className="relative flex justify-center lg:pt-12">
+                    <div
+                        className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-gray-500 to-transparent opacity-75"
+                    ></div>
+
+                    <span className="relative z-10 bg-white px-6"></span>
+                </span>
+
+                {/* {Card section} */}
+
+                <div className="w-full">
+                    <div className="my-1 sm:my-8 grid grid-cols-1 py-3 sm:grid-cols-5 sm:gap-2">
+                        <div className="py-2 col-span-3">
+                            <p className="font-semibold mb-4 text-2xl">{title}'s card</p>
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+                                    <thead className="ltr:text-left rtl:text-right">
+                                        <tr>
+                                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Card Name</th>
+                                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Type</th>
+                                        </tr>
+                                    </thead>
+                                    {/* {Map card here} */}
+                                    {cardsDetail && Array.isArray(cardsDetail) && cardsDetail.map((card: any) => (
+                                        <tbody className="divide-y divide-gray-200" key={`${card.id}`}>
+                                            <tr className="odd:bg-gray-50">
+                                                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{card.name}</td>
+                                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">{card.type}</td>
+                                            </tr>
+                                        </tbody>
+
+                                    ))}
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-8 sm:gap-6 h-auto">
-                        <dt className="font-medium text-gray-900 col-span-2">Number of cards</dt>
-                        <dd className="text-gray-700 sm:col-span-4">{cards.length}</dd>
-                    </div>
-                    <div className="grid grid-cols-3 py-3 sm:grid-cols-6 sm:gap-2">
-                        <Link to="./edit">
-                            <button className="transition shadow-md cursor-pointer transition-all duration-500 hover:translate-y-0.5 delay-50 col-span-2 border border-2 border-gray-300 hover:bg-gray-300 hover:text-white w-60 h-10 rounded col-span-1 px-2" type="submit">Edit or Add/Delete card</button>
-                        </Link>
-                    </div>
-                    
-                    
-                </dl>
+                </div>
             </div>
 
-            <span className="relative flex justify-center lg:pt-12">
-            <div
-              className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-gray-500 to-transparent opacity-75"
-            ></div>
-
-            <span className="relative z-10 bg-white px-6"></span>
-          </span>
-            {/*             
-            <p>ID-{id}</p>
-            <div className="bg-slate-400 flex w-fit rounded-md mx-10">
-                <form className="grid p-5 gap-2" onSubmit={handleSubmit}>
-                    <label className="grid-cols-2 gap-2">
-                        Title:
-                        <input type="text" className="border" defaultValue={title}  onChange={(e) => setTitle(e.target.value)}/>
-                    </label>
-                    <label>
-                        Description:
-                        <input type="text" className="border" defaultValue={description} onChange={(e) => setDescription(e.target.value)} />
-                    </label>
-                    <div className="w-full grid-cols-8">
-                        <button className="border border-black col-span-6" type="submit">Update</button>
-                        <button onClick={handleDelete} className="border border-black col-span-2">Delete</button>
-                    </div>
-                    
-                </form>
-            </div> */}
-            {formError && <p>{formError}</p>}
-            <p className="font-semibold pt-10 text-3xl">
-                My Deck:
-            </p>
-            </div>
-            
         </>
     )
+
+
+
 }
 export default DeckEdit;
