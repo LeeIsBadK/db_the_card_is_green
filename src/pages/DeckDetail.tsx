@@ -172,6 +172,7 @@ function DeckDetail() {
                                 console.error('Error fetching trap card details:', error);
                             }
                         };
+                        fetchTrapDetails();
                     }
                 }
             } catch (error) {
