@@ -388,8 +388,13 @@ function EditDeck() {
                                 type="text"
                                 id="Search"
                                 placeholder="Search for..."
-                                className="w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm"
+                                className="w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm px-1"
                                 onChange={(e) => setSearchName(e.target.value)}
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter') {
+                                        handleSearchCard(e);
+                                    }
+                                }}
                             />
 
                             <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">

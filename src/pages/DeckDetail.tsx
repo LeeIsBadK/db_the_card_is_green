@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import supabase from "../server/App";
 import Navbar from "../assets/components/navbar";
+import Footer from "../assets/components/footer";
 
 function DeckDetail() {
     const { id } = useParams();
@@ -357,9 +358,9 @@ function DeckDetail() {
                                 {cardViews === "card" && (
                                     <>
                                         <p className="text-xl pt-4 font-semibold">Monster</p>
-                                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+                                        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 my-1">
                                             {monsterCards && Array.isArray(monsterCards) && monsterCards.map((card: any) => (
-                                                <div className="bg-white shadow-md rounded-md p-2" key={card.id}>
+                                                <div className="bg-amber-50 shadow-md rounded-md p-2" key={card.id}>
                                                     <img src={card.card_images} alt={card.name} className=" object-cover" />
                                                     <p className="text-sm font-semibold">{card.name}</p>
                                                     <p className="text-xs text-gray-600">{card.type}</p>
@@ -370,9 +371,9 @@ function DeckDetail() {
                                             ))}
                                         </div>
                                         <p className="text-xl pt-4 font-semibold">Spell</p>
-                                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+                                        <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 my-1">
                                             {spellCards && Array.isArray(spellCards) && spellCards.map((card: any) => (
-                                                <div className="bg-white shadow-md rounded-md p-2" key={card.id}>
+                                                <div className="bg-emerald-50 shadow-md rounded-md p-2" key={card.id}>
                                                     <img src={card.card_images} alt={card.name} className=" object-cover" />
                                                     <p className="text-sm font-semibold">{card.name}</p>
                                                     <p className="text-xs text-gray-600">{card.type}</p>
@@ -381,9 +382,10 @@ function DeckDetail() {
                                             ))}
                                         </div>
                                         <p className="text-xl pt-4 font-semibold">Trap</p>
-                                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+                                        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8
+                                        my-2">
                                             {trapCards && Array.isArray(trapCards) && trapCards.map((card: any) => (
-                                                <div className="bg-white shadow-md rounded-md p-2" key={card.id}>
+                                                <div className="bg-rose-50 shadow-md rounded-md p-2" key={card.id}>
                                                     <img src={card.card_images} alt={card.name} className=" object-cover" />
                                                     <p className="text-sm font-semibold">{card.name}</p>
                                                     <p className="text-xs text-gray-600">{card.type}</p>
@@ -398,6 +400,7 @@ function DeckDetail() {
                     </div>
                 </div>
             </div>
+            <Footer />
 
         </>
     )
