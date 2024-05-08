@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 import supabase from '../server/App';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../assets/components/footer';
 
-const Login = ({setToken}: {setToken: any}) => {
+const Login = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const navigate = useNavigate();
@@ -11,12 +12,12 @@ const Login = ({setToken}: {setToken: any}) => {
 
     const handleSignUp = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        if ( !password || !username) {
+        if (!password || !username) {
             alert('Please fill out all fields');
             return;
         }
         const { data, error } = await supabase.auth.signInWithPassword({
-            email: username+"@dbcard.com",
+            email: username + "@dbcard.com",
             password: password,
         });
         if (error) {
@@ -24,35 +25,50 @@ const Login = ({setToken}: {setToken: any}) => {
             alert('Error signing up');
         } else {
             console.log(data);
-            alert('Sign up successful');
-            setToken(data)
-            navigate('/home')
+            alert('Log in successful');
+            navigate('/')
         }
     }
 
     return (
         <>
-            <div className='flex justify-center '>
-                <form className='grid grid-row content-center justify-center w-4/12 mt-16 py-5 border-black border-2 rounded-md gap-2'>
-                    <h1 className='text-center text-3xl bold font-bold'>Log in</h1>
-                    <label className='grid grid-cols-6'>
-                        <div className='col-span-1'>Username:</div>
-                        <div className='col-span-1'></div>
-                        <input type="username" className="border-black border col-span-4" value={username} onChange={(e) => setUsername(e.target.value)} />
-                    </label>
-                    <label className='grid grid-cols-6'>
-                        <div className='col-span-1'>Password:</div>
-                        <div className='col-span-1'></div>
-                        <input type="password" className="border-black border col-span-4" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    </label>
-                    <div className="flex justify-center">
-                        <button type="button" className='border w-32 rounded-md bg-green-500 hover:bg-green-600' onClick={handleSignUp}>
-                            Sign Up
-                        </button>
-                    </div>
-                    <div className='mt-5'> Are you not have account</div> <Link to="/signup" className='text-blue-500 underline'>Sign up</Link>
-                </form>
+            <div className="flex h-[85vh] flex-col justify-center px-6 py-12 lg:px-8">
+                <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                    <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Log in</h2>
+                </div>
+
+                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                    <form className="space-y-6">
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Username</label>
+                            <div className="mt-2">
+                                <input id="email" name="username" required className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value={username} onChange={(e) => setUsername(e.target.value)} />
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className="flex items-center justify-between">
+                                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                                <div className="text-sm">
+                                </div>
+                            </div>
+                            <div className="mt-2">
+                                <input id="password" name="password" type="password" autoComplete="current-password" required className="block w-full px-1 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            </div>
+                        </div>
+
+                        <div>
+                            <button type="submit" className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600" onClick={handleSignUp} >Log in</button>
+                        </div>
+                    </form>
+
+                    <p className="mt-10 text-center text-sm text-gray-500">
+                        Not a member?
+                        <Link to='/signup' className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Sign up Here</Link>
+                    </p>
+                </div>
             </div>
+            <Footer/>
         </>
 
     );
