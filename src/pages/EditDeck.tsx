@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../assets/components/navbar";
 import { useState } from "react";
+import Footer from "../assets/components/footer";
 
 function EditDeck() {
     const { id } = useParams()
@@ -448,6 +449,7 @@ function EditDeck() {
                 </div>
 
             </div>
+            <Footer/>
         </>
     )
 }
