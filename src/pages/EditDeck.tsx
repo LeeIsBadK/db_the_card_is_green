@@ -89,6 +89,10 @@ function EditDeck() {
         setIsLoad(true)
         setSearchError(null)
         try {
+            if  (cards.length >= 80) {
+                setSearchError('You cannot add more than 90 cards to the deck (From Official Rulebook V.10)');
+                return;
+            }
             if (!card.api_card_id || card.api_card_id === "null") {
                 console.error("Invalid card ID:", card.api_card_id);
                 setSearchError("Invalid card ID");
@@ -110,6 +114,7 @@ function EditDeck() {
                 setSearchError('You cannot add more than 3 instances of the same card to the deck');
                 return;
             }
+
 
             const { error } = await supabase
                 .from('DeckCards')
