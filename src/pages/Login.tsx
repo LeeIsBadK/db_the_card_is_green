@@ -10,7 +10,7 @@ const Login = () => {
     const navigate = useNavigate();
 
 
-    const handleSignUp = async (e: { preventDefault: () => void; }) => {
+    const handleSignIn = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         if (!password || !username) {
             alert('Please fill out all fields');
@@ -21,8 +21,8 @@ const Login = () => {
             password: password,
         });
         if (error) {
-            console.log(error);
-            alert('Error signing up');
+            console.error(error);
+            alert(error.message);
         } else {
             console.log(data);
             alert('Log in successful');
@@ -58,7 +58,7 @@ const Login = () => {
                         </div>
 
                         <div>
-                            <button type="submit" className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600" onClick={handleSignUp} >Log in</button>
+                            <button type="submit" className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600" onClick={handleSignIn} >Log in</button>
                         </div>
                     </form>
 

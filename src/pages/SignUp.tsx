@@ -20,7 +20,7 @@ const SignUp = () => {
             },
         });
         if (error) {
-            console.log(error);
+            console.error(error);
             alert('Error signing up');
         } else {
             alert('Sign up successful');
