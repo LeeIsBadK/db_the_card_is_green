@@ -367,12 +367,13 @@ function DeckDetail() {
 
                     setTitle(data.name);
                     setDescription(data.description);
+                    console.log("data", data);
 
                     const { data: fetchedCards, error: cardError } = await supabase
                         .from('DeckCards')
                         .select(`
                         *,
-                            Cards(name,
+                        Cards(name,
                                 type,
                                 desc,
                                 card_images,
@@ -689,7 +690,7 @@ function DeckDetail() {
                                             <div className="pt-5">
                                                 <button className="transition shadow-md cursor-pointer duration-500 hover:translate-y-0.5 delay-50 border-2 border-gray-300 hover:bg-gray-300 hover:text-white h-10 rounded col-span-1 px-2 w-40" type="submit" onClick={download_img}>{<>
                                                     <div className="flex items-center gap-2">
-                                                        <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"className="h-4 w-4">
+                                                        <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4">
                                                             <path d="M21 15V16.2C21 17.8802 21 18.7202 20.673 19.362C20.3854 19.9265 19.9265 20.3854 19.362 20.673C18.7202 21 17.8802 21 16.2 21H7.8C6.11984 21 5.27976 21 4.63803 20.673C4.07354 20.3854 3.6146 19.9265 3.32698 19.362C3 18.7202 3 17.8802 3 16.2V15M17 10L12 15M12 15L7 10M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                         </svg>
                                                         <div>

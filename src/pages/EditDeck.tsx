@@ -89,8 +89,9 @@ function EditDeck() {
     const handleAddCard = async (card: any) => {
         setIsLoad(true)
         setSearchError(null)
+        let numCards = 0;
         try {
-            if  (cards.length >= 80) {
+            if  (cards.length >= 90) {
                 setSearchError('You cannot add more than 90 cards to the deck (From Official Rulebook V.10)');
                 return;
             }
@@ -112,6 +113,16 @@ function EditDeck() {
             }
 
             if (existingCards && existingCards.length >= 3) {
+                setSearchError('You cannot add more than 3 instances of the same card to the deck');
+                return;
+            }
+
+            cardsDetail.forEach((c) => {
+                if (c.api_card_id === card.api_card_id) {
+                    numCards++;
+                }
+            });
+            if (numCards >= 3) {
                 setSearchError('You cannot add more than 3 instances of the same card to the deck');
                 return;
             }
