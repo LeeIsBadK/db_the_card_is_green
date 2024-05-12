@@ -8,7 +8,7 @@ This project shows an implementation of the database by using react.js for web p
 
 ## Slide
 
-[Canva](https://www.canva.com/design/DAGEoaWRZ9U/NowO2XjvIrCT8Kz2GQ6RtQ/edit)
+[Canva (TH only)](https://www.canva.com/design/DAGEoaWRZ9U/_mC-tkhSh0o8dU5D_r4ITg/view?utm_content=DAGEoaWRZ9U&utm_campaign=designshare&utm_medium=link&utm_source=editor)
 
 ## Acknowledgements
 
