@@ -1,48 +1,46 @@
+
 # db_the_card_is_green Project
 
-## Memeber
-* Aom
-* Kampun
-* Reinn
-* TA
+In CU 2301375 DB Project 2/2023 \
+This project making a simple YUGIOH! deck
 
-# Progression
-## Week 1 19-22 Mar 2024
-* Setting up project (Vite + Supabase)
-* Brief Project proposal & (EA-diagram)
+This project shows an implementation of the database by using react.js for web programming, Supabase for hosting the database, and authentication and tailwind for CSS styling
+
+## Slide
+
+[Canva](https://www.canva.com/design/DAGEoaWRZ9U/NowO2XjvIrCT8Kz2GQ6RtQ/edit)
+
+## Acknowledgements
+
+ - [YUGIOH! API](https://ygoprodeck.com/api-guide/)
+ - [Supabase docs](https://supabase.com/docs)
 
 
 
+## Tech Stack
+
+**Client:** React, TailwindCSS
+
+**Server:** Node, Supabase
 
 
+## Demo
 
-# React + TypeScript + Vite
+[Web demo](cscu2024-db-yugioh-proj.vercel.app)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## Environment Variables
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+To run this project, you will need to add the following environment variables to your .env file
 
-## Expanding the ESLint configuration
+`VITE_PROJECT_URL`
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+`VITE_ANON_KEY`
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Authors
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- [@LeeIsBadK](https://github.com/LeeIsBadK)
+- [@GodOfThrow](https://github.com/GodOfThrow)
+- [@ReinnFK](https://github.com/ReinnFK)
+- [@aomCU](https://github.com/aomCU)
