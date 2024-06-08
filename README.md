@@ -6,7 +6,7 @@ This project making a simple YUGIOH! deck
 
 This project shows an implementation of the database by using react.js for web programming, Supabase for hosting the database, and authentication and tailwind for CSS styling
 
-## Slide
+## Slide and Demo
 
 [Canva (TH only)](https://www.canva.com/design/DAGEoaWRZ9U/_mC-tkhSh0o8dU5D_r4ITg/view?utm_content=DAGEoaWRZ9U&utm_campaign=designshare&utm_medium=link&utm_source=editor)
 
